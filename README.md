@@ -1,3 +1,5 @@
+###This project is a frontend client built with React that connects to api [api](https://github.com/n-freman/tmCarsSongs). The frontend handles login, token management, and dynamic routing with TanStack Router.
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
