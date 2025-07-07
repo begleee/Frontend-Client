@@ -69,4 +69,3 @@ export default tseslint.config([
   },
 ])
 ```
->>>>>>> 23948c8 (Add frontend connected to forked API)
