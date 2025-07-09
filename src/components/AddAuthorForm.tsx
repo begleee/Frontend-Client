@@ -1,11 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie"
-import { TextField, Button } from "@mui/material"
+import { TextField, Button, Card } from "@mui/material"
 import { nofaceImage } from "../assets/nofaceImage";
 import { useNavigate } from "@tanstack/react-router";
 
-const AddSingerForm = () => {
+const AddAuthorForm = () => {
     const [cookies, setCookie, removeCookies] = useCookies(['tokens'])
     const accessToken = cookies.tokens?.access
     const refreshToken = cookies.tokens?.refresh
@@ -78,8 +78,8 @@ const AddSingerForm = () => {
     },[photo])
 
   return (
-    <form className="flex flex-col gap-3 m-4">
-        <TextField type='text' value={fullName} onChange={(e) => setFullName(e.target.value)} label="Singer Name" variant="outlined"/>
+    <form className="flex flex-col gap-3 m-3">
+        <TextField type='text' value={fullName} onChange={(e) => setFullName(e.target.value)} label="Author name" variant="outlined"/>
         <Button variant="contained" component="label">
             Upload a photo
             <input onChange={onChangePhoto} type="file" hidden/>
@@ -93,9 +93,17 @@ const AddSingerForm = () => {
             variant="outlined" type="button">
                 Logout
         </Button>
-        <img width={200} src={imgUrl || './'} alt="" />
+        <Card variant="outlined" className="flex flex-row gap-2 p-2 border">
+            <div className="w-20 h-20 overflow-hidden rounded">
+                <img className="w-full h-full object-cover rounded" src={imgUrl || './'} alt="" />
+            </div>
+            <div className="flex flex-col">
+                <p className="font-bold">{fullName || "Author name"}</p>
+                <p>0 songs</p>
+            </div>
+        </Card>
     </form>
   )
 }
 
-export default AddSingerForm
+export default AddAuthorForm

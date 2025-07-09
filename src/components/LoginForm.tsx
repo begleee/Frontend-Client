@@ -17,7 +17,7 @@ const LoginForm = () => {
 
     function handleLogin(token: object) {
         setCookie('tokens', token, {path: '/'})
-        navigate({to: '/dashboard'});
+        navigate({to: '/home'});
     }
 
     async function handleSubmit(event: React.FormEvent) {

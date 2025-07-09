@@ -10,6 +10,9 @@ function RootComponent() {
     <div>
     <div className="p-2 flex gap-2">{' '}
         <Link to='/' className="[&.active]:font-bold">
+          Login
+        </Link>
+        <Link to='/home' className="[&.active]:font-bold">
             Home
         </Link>
     </div>

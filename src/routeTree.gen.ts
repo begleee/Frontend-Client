@@ -9,12 +9,14 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as HomeRouteImport } from './routes/home'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as HomeSongsRouteImport } from './routes/home/songs'
+import { Route as HomeAuthorsRouteImport } from './routes/home/authors'
 
-const DashboardRoute = DashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
+const HomeRoute = HomeRouteImport.update({
+  id: '/home',
+  path: '/home',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -22,40 +24,56 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HomeSongsRoute = HomeSongsRouteImport.update({
+  id: '/songs',
+  path: '/songs',
+  getParentRoute: () => HomeRoute,
+} as any)
+const HomeAuthorsRoute = HomeAuthorsRouteImport.update({
+  id: '/authors',
+  path: '/authors',
+  getParentRoute: () => HomeRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRoute
+  '/home': typeof HomeRouteWithChildren
+  '/home/authors': typeof HomeAuthorsRoute
+  '/home/songs': typeof HomeSongsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRoute
+  '/home': typeof HomeRouteWithChildren
+  '/home/authors': typeof HomeAuthorsRoute
+  '/home/songs': typeof HomeSongsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRoute
+  '/home': typeof HomeRouteWithChildren
+  '/home/authors': typeof HomeAuthorsRoute
+  '/home/songs': typeof HomeSongsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard'
+  fullPaths: '/' | '/home' | '/home/authors' | '/home/songs'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard'
-  id: '__root__' | '/' | '/dashboard'
+  to: '/' | '/home' | '/home/authors' | '/home/songs'
+  id: '__root__' | '/' | '/home' | '/home/authors' | '/home/songs'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  DashboardRoute: typeof DashboardRoute
+  HomeRoute: typeof HomeRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteImport
+    '/home': {
+      id: '/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof HomeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -65,12 +83,38 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/home/songs': {
+      id: '/home/songs'
+      path: '/songs'
+      fullPath: '/home/songs'
+      preLoaderRoute: typeof HomeSongsRouteImport
+      parentRoute: typeof HomeRoute
+    }
+    '/home/authors': {
+      id: '/home/authors'
+      path: '/authors'
+      fullPath: '/home/authors'
+      preLoaderRoute: typeof HomeAuthorsRouteImport
+      parentRoute: typeof HomeRoute
+    }
   }
 }
 
+interface HomeRouteChildren {
+  HomeAuthorsRoute: typeof HomeAuthorsRoute
+  HomeSongsRoute: typeof HomeSongsRoute
+}
+
+const HomeRouteChildren: HomeRouteChildren = {
+  HomeAuthorsRoute: HomeAuthorsRoute,
+  HomeSongsRoute: HomeSongsRoute,
+}
+
+const HomeRouteWithChildren = HomeRoute._addFileChildren(HomeRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  DashboardRoute: DashboardRoute,
+  HomeRoute: HomeRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
